@@ -1,0 +1,8 @@
+apiVersion: nathanv.me/v1
+kind: DNSConfig
+metadata:
+  name: bookstack-dns-config
+spec:
+  hostname: bookstack.nathanv.app
+  internalCNAME: reverse-proxy.svc.nathanv.home
+  externalCNAME: tunnel.nathanv.app

@@ -1,0 +1,7 @@
+apiVersion: nathanv.me/v1
+kind: DNSConfig
+metadata:
+  name: chrony-dns-config-1
+spec:
+  hostname: ntp.svc.nathanv.home
+  internalService: chrony-service
