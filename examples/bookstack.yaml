@@ -2,6 +2,7 @@ apiVersion: nathanv.me/v1
 kind: DNSConfig
 metadata:
   name: bookstack-dns-config
+  namespace: bookstack
 spec:
   hostname: bookstack.nathanv.app
   internalCNAME: reverse-proxy.svc.nathanv.home
