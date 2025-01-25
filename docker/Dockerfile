@@ -18,4 +18,4 @@ COPY app app
 COPY docker/app.py ./
 
 EXPOSE 80
-CMD ["uv", "run", "kopf", "run", "docker-entrypoint.py", "--verbose"]
+CMD ["uv", "run", "kopf", "run", "app.py", "--verbose"]
