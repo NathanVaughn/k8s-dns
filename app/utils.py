@@ -1,6 +1,6 @@
 import functools
 
-import k8s_dns.k8s
+import app.k8s
 
 
 @functools.cache
@@ -21,7 +21,5 @@ def get_service_ip(namespace: str, name: str) -> str:
     """
     Given a service name and namespace, returns the external IP of the service.
     """
-    service = k8s_dns.k8s.v1_client.read_namespaced_service(
-        name=name, namespace=namespace
-    )
+    service = app.k8s.v1_client.read_namespaced_service(name=name, namespace=namespace)
     return service.status.load_balancer.ingress[0].ip  # type: ignore

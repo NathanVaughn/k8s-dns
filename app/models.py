@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from k8s_dns.types import RECORD_TYPES
+from app.types import RECORD_TYPES
 
 
 @dataclass

@@ -1,8 +1,8 @@
 import logging
 from abc import ABC, abstractmethod
 
-from k8s_dns.models import DNSRecord
-from k8s_dns.types import RECORD_TYPES
+from app.models import DNSRecord
+from app.types import RECORD_TYPES
 
 
 class BaseProvider(ABC):

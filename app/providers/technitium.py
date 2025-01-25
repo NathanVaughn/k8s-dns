@@ -1,10 +1,10 @@
 import requests
 
-import k8s_dns.utils
-from k8s_dns.config import TECHNITIUM_API_TOKEN, TECHNITIUM_HOST
-from k8s_dns.models import DNSRecord
-from k8s_dns.providers._base import BaseProvider
-from k8s_dns.types import RECORD_TYPES
+import app.utils
+from app.config import TECHNITIUM_API_TOKEN, TECHNITIUM_HOST
+from app.models import DNSRecord
+from app.providers._base import BaseProvider
+from app.types import RECORD_TYPES
 
 
 class _TechnitiumProvider(BaseProvider):
@@ -36,7 +36,7 @@ class _TechnitiumProvider(BaseProvider):
         Find a DNS record by its host.
         Returns the record ID if found, None otherwise.
         """
-        host_zone = k8s_dns.utils.get_zone_from_host(host)
+        host_zone = app.utils.get_zone_from_host(host)
         path = "zones/records/get"
         params = {"domain": host_zone, "listZone": True}
 
@@ -74,7 +74,7 @@ class _TechnitiumProvider(BaseProvider):
         """
         Create a DNS record. Does not check if the record already exists.
         """
-        host_zone = k8s_dns.utils.get_zone_from_host(host)
+        host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/add"
         params = {"domain": host_zone, "type": RECORD_TYPES, "disable": False}
@@ -92,7 +92,7 @@ class _TechnitiumProvider(BaseProvider):
         """
         Update an existing DNS record.
         """
-        host_zone = k8s_dns.utils.get_zone_from_host(host)
+        host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/update"
         params = {"domain": host_zone, "type": type, "disable": False}
@@ -109,7 +109,7 @@ class _TechnitiumProvider(BaseProvider):
         """
         Delete a DNS record. Does not check if the record exists.
         """
-        host_zone = k8s_dns.utils.get_zone_from_host(host)
+        host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/delete"
         params = {"domain": host_zone, "type": existing_record.type}

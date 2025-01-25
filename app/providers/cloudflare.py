@@ -3,11 +3,11 @@ import functools
 from cloudflare import Cloudflare
 from cloudflare.types.zones import Zone
 
-import k8s_dns.utils
-from k8s_dns.config import CLOUDFLARE_API_TOKEN
-from k8s_dns.models import DNSRecord
-from k8s_dns.providers._base import BaseProvider
-from k8s_dns.types import RECORD_TYPES
+import app.utils
+from app.config import CLOUDFLARE_API_TOKEN
+from app.models import DNSRecord
+from app.providers._base import BaseProvider
+from app.types import RECORD_TYPES
 
 # if we're targeting an IP directly, no way we want to proxy it.
 # ie, game server, not HTTP traffic
@@ -27,7 +27,7 @@ class _CloudflareProvider(BaseProvider):
         """
         Given a host, find and return the Cloudflare Zone for it.
         """
-        host_zone = k8s_dns.utils.get_zone_from_host(host)
+        host_zone = app.utils.get_zone_from_host(host)
         return list(self._client.zones.list(name=host_zone))[0]
 
     def _find_record(self, host: str) -> DNSRecord | None:
