@@ -46,7 +46,7 @@ class _TechnitiumProvider(BaseProvider):
         """
         host_zone = app.utils.get_zone_from_host(host)
         path = "zones/records/get"
-        params = {"domain": host_zone, "listZone": True}
+        params = {"domain": host, "zone": host_zone, "listZone": True}
 
         response = self._api_call(path, params)
         records = response["response"]["records"]
@@ -85,7 +85,12 @@ class _TechnitiumProvider(BaseProvider):
         host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/add"
-        params = {"domain": host_zone, "type": RECORD_TYPES, "disable": False}
+        params = {
+            "domain": host,
+            "zone": host_zone,
+            "type": RECORD_TYPES,
+            "disable": False,
+        }
 
         if type == "A":
             params["ipAddress"] = target
@@ -103,7 +108,7 @@ class _TechnitiumProvider(BaseProvider):
         host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/update"
-        params = {"domain": host_zone, "type": type, "disable": False}
+        params = {"domain": host, "zone": host_zone, "type": type, "disable": False}
 
         if type == "A":
             params["newIpAddress"] = target
@@ -120,7 +125,7 @@ class _TechnitiumProvider(BaseProvider):
         host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/delete"
-        params = {"domain": host_zone, "type": existing_record.type}
+        params = {"domain": host, "zone": host_zone, "type": existing_record.type}
 
         if existing_record.type == "A":
             params["ipAddress"] = existing_record.target
