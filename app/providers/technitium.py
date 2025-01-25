@@ -8,6 +8,7 @@ from app.types import RECORD_TYPES
 
 
 class _TechnitiumProvider(BaseProvider):
+    @property
     def name(self) -> str:
         return "Technitium"
 
@@ -27,7 +28,8 @@ class _TechnitiumProvider(BaseProvider):
         # ensire request was successful
         response.raise_for_status()
         response_json = response.json()
-        assert response_json["status"] == "ok"
+        if response_json["status"] != "ok":
+            raise Exception(f"API call failed: {response_json}")
 
         return response_json
 

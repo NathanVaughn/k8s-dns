@@ -19,6 +19,7 @@ class _CloudflareProvider(BaseProvider):
     def __init__(self) -> None:
         self._client = Cloudflare(api_token=CLOUDFLARE_API_TOKEN)
 
+    @property
     def name(self) -> str:
         return "Cloudflare"
 
