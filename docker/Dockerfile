@@ -15,7 +15,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 
 # Copy the application code
 COPY app app
-COPY docker/app.py ./
+COPY docker/docker-entrypoint.py ./
 
 EXPOSE 80
-CMD ["uv", "run", "kopf", "run", "app.py", "--verbose"]
+CMD ["uv", "run", "kopf", "run", "docker-entrypoint.py", "--all-namespaces", "--verbose"]
