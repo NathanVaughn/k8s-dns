@@ -23,15 +23,14 @@
             "dependsOn": ["install-pkgs"]
         },
         {
-            "label": "tests",
-            "command": "uv run pytest --cov=TODO/ --cov-report html",
+            "label": "run",
+            "command": "uv run kopf run app.py --verbose",
             "type": "shell",
             "dependsOn": ["install-pkgs"]
         },
         {
-            // TODO: can be deleted if not package
             "label": "build",
-            "command": "uv build",
+            "command": "docker build -t cr.nathanv.app/library/k8s-dns:latest -f docker/Dockerfile .",
             "type": "shell",
             "dependsOn": ["install-pkgs"]
         }

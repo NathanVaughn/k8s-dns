@@ -1,7 +1,7 @@
 [project]
     name = "k8s-dns"
     version = "0.1.0"
-    description = "TODODESC"
+    description = "A Kubernetes controller to manage internal and external DNS records"
     readme = "README.md"
     authors = [{ name = "Nathan Vaughn", email = "nath@nvaughn.email" }]
     classifiers = [
@@ -9,7 +9,12 @@
         "Programming Language :: Python :: 3.13",
     ]
     requires-python = ">=3.9"
-    dependencies = []
+    dependencies = [
+        "cloudflare>=4.0.0",
+        "kopf>=1.37.4",
+        "kubernetes>=32.0.0",
+        "requests>=2.32.3",
+    ]
 
 [dependency-groups]
     dev = ["pre-commit>=3.2.0"]
