@@ -20,13 +20,13 @@ class _TechnitiumProvider(BaseProvider):
         """
         # remove extra slashes from the path
         path = path.strip("/")
-
-        # add api token to params
-        params["token"] = TECHNITIUM_API_TOKEN
         url = f"{TECHNITIUM_HOST.removesuffix('/')}/api/{path}"
 
         # logging
         logging.debug(f"Making API call to {url} with params: {params}")
+
+        # add api token to params
+        params["token"] = TECHNITIUM_API_TOKEN
 
         # all api calls are allowed to be POST requests with form datta
         response = requests.post(url, data=params)
