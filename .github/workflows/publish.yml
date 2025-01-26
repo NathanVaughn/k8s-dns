@@ -31,19 +31,6 @@ jobs:
         id: project
         shell: bash
         run: echo "version=$(python -c 'import tomllib;fp=open("pyproject.toml","rb");print(tomllib.load(fp)["project"]["version"]);fp.close()')" >> $GITHUB_OUTPUT
-
-  release:
-    needs: get-version
-
-    permissions:
-      contents: write
-
-    uses: NathanVaughn/reusable-actions/.github/workflows/create-release.yml@main
-    with:
-      tag: ${{ needs.get-version.outputs.version }}
-      body: "Latest release"
-
-
   build:
     needs: get-version
 
@@ -61,6 +48,19 @@ jobs:
       dockerfile: docker/Dockerfile
       context: .
       push: true
+
+  release:
+    needs:
+      - get-version
+      - build
+
+    permissions:
+      contents: write
+
+    uses: NathanVaughn/reusable-actions/.github/workflows/create-release.yml@main
+    with:
+      tag: ${{ needs.get-version.outputs.version }}
+      body: "Latest release"
 
   attest:
     needs: build
