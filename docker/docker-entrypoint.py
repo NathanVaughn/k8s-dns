@@ -21,10 +21,11 @@ def update_dns_record(spec: dict, namespace: str, **kwargs: dict) -> dict:
 def delete_dns_record(spec: dict, namespace: str, **kwargs: dict) -> dict:
     hostname = spec["hostname"]
     internal_cname = spec.get("internalCNAME")
+    internal_ip = spec.get("internalIP")
     internal_service = spec.get("internalService")
     external_cname = spec.get("externalCNAME")
 
-    if internal_cname or internal_service:
+    if internal_cname or internal_service or internal_ip:
         app.providers.technitium.Provider.del_record(host=hostname)
 
     if external_cname:
@@ -36,6 +37,7 @@ def delete_dns_record(spec: dict, namespace: str, **kwargs: dict) -> dict:
 def create_or_update(spec: dict, namespace: str) -> None:
     hostname = spec["hostname"]
     internal_cname = spec.get("internalCNAME")
+    internal_ip = spec.get("internalIP")
     internal_service = spec.get("internalService")
     external_cname = spec.get("externalCNAME")
 
@@ -44,12 +46,16 @@ def create_or_update(spec: dict, namespace: str) -> None:
         app.providers.technitium.Provider.add_record(
             host=hostname, target=internal_cname, type="CNAME"
         )
+    elif internal_ip:
+        app.providers.technitium.Provider.add_record(
+            host=hostname, target=internal_ip, type="A"
+        )
     elif internal_service:
-        external_ip = app.utils.get_service_ip(
-            namespace="default", name=internal_service
+        internal_ip = app.utils.get_service_ip(
+            namespace=namespace, name=internal_service
         )
         app.providers.technitium.Provider.add_record(
-            host=hostname, target=external_ip, type="CNAME"
+            host=hostname, target=internal_ip, type="A"
         )
 
     # external

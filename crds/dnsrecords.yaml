@@ -27,10 +27,13 @@ spec:
                 description: The hostname of the record(s) to create.
               internalCNAME:
                 type: string
-                description: For the internal DNS record, what the value of the target of the CNAME record should be. Cannot be combined with `internalService`.
+                description: For the internal DNS record, what the value of the target of the CNAME record should be. Cannot be combined with `internalService` or `internalIP`.
               internalService:
                 type: string
-                description: For the internal DNS record, what service should be used as the target of the A record should be. Must exist in the same namespace. Cannot be combined with `internalCNAME`.
+                description: For the internal DNS record, what service should be used as the target of the A record should be. Must exist in the same namespace. Cannot be combined with `internalCNAME` or `internalIP`.
+              internalIP:
+                type: string
+                description: For the internal DNS record, what IP should be used as the target of the A record should be. Cannot be combined with `internalCNAME` or `internalService`.
               externalCNAME:
                 type: string
                 description: If an external DNS record should be created, what the value of the target of the CNAME record should be.
@@ -41,3 +44,5 @@ spec:
                   - internalCNAME
               - required:
                   - internalService
+              - required:
+                  - internalIP
