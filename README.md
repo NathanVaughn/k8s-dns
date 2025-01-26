@@ -29,7 +29,9 @@ The following environment variables are required:
 
 - `CLOUDFLARE_API_TOKEN`: This must have DNS zone edit permissions.
 - `TECHNITIUM_API_TOKEN`
-- `TECHNITIUM_HOST`
+- `TECHNITIUM_HOST`: This is the URL of the Technitium server,
+  including prefix and port. Example:
+  `http://technitium-dns-service.technitium-dns.svc.cluster.local:5380`
 
 The custom resource definition in the `crd` folder also must be applied.
 
