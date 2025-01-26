@@ -88,7 +88,7 @@ class _TechnitiumProvider(BaseProvider):
         params = {
             "domain": host,
             "zone": host_zone,
-            "type": RECORD_TYPES,
+            "type": type,
             "disable": False,
         }
 
