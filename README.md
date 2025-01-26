@@ -20,6 +20,7 @@ and a local [Technitium](https://technitium.com/dns/) server.
 This Operator is not very smart. It assumes the IP address of a referenced
 service will never change. If it does, DNS records will need to manually
 updated. It also cannot handle referenced services being deleted or recreated.
+Lastly, it assumes the zones have already been created in both providers.
 
 ## Deployment
 
