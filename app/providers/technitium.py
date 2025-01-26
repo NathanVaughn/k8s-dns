@@ -111,9 +111,9 @@ class _TechnitiumProvider(BaseProvider):
         params = {"domain": host, "zone": host_zone, "type": type, "disable": False}
 
         if type == "A":
+            params["ipAddress"] = existing_record.target
             params["newIpAddress"] = target
         elif type == "CNAME":
-            # not a typo
             params["cname"] = target
 
         self._api_call(path, params)
@@ -129,10 +129,6 @@ class _TechnitiumProvider(BaseProvider):
 
         if existing_record.type == "A":
             params["ipAddress"] = existing_record.target
-
-        # not needed
-        # elif type == "CNAME":
-        #     params["cname"] = target
 
         self._api_call(path, params)
 
