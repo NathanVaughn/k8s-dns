@@ -55,18 +55,30 @@ class _CloudflareProvider(BaseProvider):
             type=record.type,  # type: ignore
         )
 
-    def _create_record(self, host: str, target: str, type: RECORD_TYPES) -> None:
+    def _create_record(
+        self, host: str, target: str, type: RECORD_TYPES, comments: str
+    ) -> None:
         """
         Create a DNS record. Does not check if the record already exists.
         """
         zone = self._find_zone(host)
 
         self._client.dns.records.create(
-            zone_id=zone.id, type=type, name=host, content=target, proxied=PROXIED[type]
+            zone_id=zone.id,
+            type=type,
+            name=host,
+            content=target,
+            proxied=PROXIED[type],
+            comment=comments,
         )
 
     def _update_record(
-        self, host: str, target: str, type: RECORD_TYPES, existing_record: DNSRecord
+        self,
+        host: str,
+        target: str,
+        type: RECORD_TYPES,
+        existing_record: DNSRecord,
+        comments: str,
     ) -> None:
         """
         Update an existing DNS record.
@@ -79,6 +91,7 @@ class _CloudflareProvider(BaseProvider):
             name=host,
             content=target,
             proxied=PROXIED[type],
+            comment=comments,
         )
 
     def _delete_record(self, host: str, existing_record: DNSRecord) -> None:
