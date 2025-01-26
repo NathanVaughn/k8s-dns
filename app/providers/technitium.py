@@ -78,7 +78,9 @@ class _TechnitiumProvider(BaseProvider):
             type=record["type"],
         )
 
-    def _create_record(self, host: str, target: str, type: RECORD_TYPES) -> None:
+    def _create_record(
+        self, host: str, target: str, type: RECORD_TYPES, comments: str
+    ) -> None:
         """
         Create a DNS record. Does not check if the record already exists.
         """
@@ -90,17 +92,25 @@ class _TechnitiumProvider(BaseProvider):
             "zone": host_zone,
             "type": type,
             "disable": False,
+            "comments": comments,
         }
 
         if type == "A":
             params["ipAddress"] = target
+            params["ptr"] = True
+            params["createPtrZone"] = True
         elif type == "CNAME":
             params["cname"] = target
 
         self._api_call(path, params)
 
     def _update_record(
-        self, host: str, target: str, type: RECORD_TYPES, existing_record: DNSRecord
+        self,
+        host: str,
+        target: str,
+        type: RECORD_TYPES,
+        existing_record: DNSRecord,
+        comments: str,
     ) -> None:
         """
         Update an existing DNS record.
@@ -108,11 +118,19 @@ class _TechnitiumProvider(BaseProvider):
         host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/update"
-        params = {"domain": host, "zone": host_zone, "type": type, "disable": False}
+        params = {
+            "domain": host,
+            "zone": host_zone,
+            "type": type,
+            "disable": False,
+            "comments": comments,
+        }
 
         if type == "A":
             params["ipAddress"] = existing_record.target
             params["newIpAddress"] = target
+            params["ptr"] = True
+            params["createPtrZone"] = True
         elif type == "CNAME":
             params["cname"] = target
 

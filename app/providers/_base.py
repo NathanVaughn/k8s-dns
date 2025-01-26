@@ -23,7 +23,9 @@ class BaseProvider(ABC):
         ...
 
     @abstractmethod
-    def _create_record(self, host: str, target: str, type: RECORD_TYPES) -> None:
+    def _create_record(
+        self, host: str, target: str, type: RECORD_TYPES, comments: str
+    ) -> None:
         """
         Create a DNS record. Does not check if the record already exists.
         """
@@ -31,7 +33,12 @@ class BaseProvider(ABC):
 
     @abstractmethod
     def _update_record(
-        self, host: str, target: str, type: RECORD_TYPES, existing_record: DNSRecord
+        self,
+        host: str,
+        target: str,
+        type: RECORD_TYPES,
+        existing_record: DNSRecord,
+        comments: str,
     ) -> None:
         """
         Update an existing DNS record.
@@ -45,7 +52,9 @@ class BaseProvider(ABC):
         """
         ...
 
-    def add_record(self, host: str, target: str, type: RECORD_TYPES) -> None:
+    def add_record(
+        self, host: str, target: str, type: RECORD_TYPES, comments: str = ""
+    ) -> None:
         """
         Create or update a DNS record.
         """
@@ -57,11 +66,15 @@ class BaseProvider(ABC):
 
             logging.info(f"[{self.name}] Updating DNS record for {host} -> {target}")
             self._update_record(
-                host=host, target=target, type=type, existing_record=record
+                host=host,
+                target=target,
+                type=type,
+                existing_record=record,
+                comments=comments,
             )
         else:
             logging.info(f"[{self.name}] Creating DNS record for {host} -> {target}")
-            self._create_record(host=host, target=target, type=type)
+            self._create_record(host=host, target=target, type=type, comments=comments)
 
     def del_record(self, host: str) -> None:
         """

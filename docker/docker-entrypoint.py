@@ -40,26 +40,27 @@ def create_or_update(spec: dict, namespace: str) -> None:
     internal_ip = spec.get("internalIP")
     internal_service = spec.get("internalService")
     external_cname = spec.get("externalCNAME")
+    comments = spec.get("comments", "")
 
     # internal
     if internal_cname:
         app.providers.technitium.Provider.add_record(
-            host=hostname, target=internal_cname, type="CNAME"
+            host=hostname, target=internal_cname, type="CNAME", comments=comments
         )
     elif internal_ip:
         app.providers.technitium.Provider.add_record(
-            host=hostname, target=internal_ip, type="A"
+            host=hostname, target=internal_ip, type="A", comments=comments
         )
     elif internal_service:
         internal_ip = app.utils.get_service_ip(
             namespace=namespace, name=internal_service
         )
         app.providers.technitium.Provider.add_record(
-            host=hostname, target=internal_ip, type="A"
+            host=hostname, target=internal_ip, type="A", comments=comments
         )
 
     # external
     if external_cname:
         app.providers.cloudflare.Provider.add_record(
-            host=hostname, target=external_cname, type="CNAME"
+            host=hostname, target=external_cname, type="CNAME", comments=comments
         )

@@ -1,6 +1,6 @@
 [project]
     name = "k8s-dns"
-    version = "0.1.1"
+    version = "0.1.2"
     description = "A Kubernetes controller to manage internal and external DNS records"
     readme = "README.md"
     authors = [{ name = "Nathan Vaughn", email = "nath@nvaughn.email" }]

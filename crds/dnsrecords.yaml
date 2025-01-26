@@ -37,6 +37,9 @@ spec:
               externalCNAME:
                 type: string
                 description: If an external DNS record should be created, what the value of the target of the CNAME record should be.
+              comments:
+                type: string
+                description: Optional comments to add to the DNS record.
             required:
               - hostname
             oneOf:
