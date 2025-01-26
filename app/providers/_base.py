@@ -51,6 +51,10 @@ class BaseProvider(ABC):
         """
         record = self._find_record(host)
         if record:
+            if record.host == host and record.target == target and record.type == type:
+                logging.info(f"[{self.name}] DNS record for {host} already exists")
+                return
+
             logging.info(f"[{self.name}] Updating DNS record for {host} -> {target}")
             self._update_record(
                 host=host, target=target, type=type, existing_record=record

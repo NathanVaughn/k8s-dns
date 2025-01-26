@@ -1,5 +1,4 @@
-# TODO: cam be deleted if not package
-name: Publish
+name: Build and Push
 
 on:
   workflow_dispatch:
@@ -8,31 +7,75 @@ on:
       - release
 
 jobs:
-  build:
+  get-version:
+    if: "${{ !contains(github.event.head_commit.message, 'ci skip') }}"
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      version: ${{ steps.project.outputs.version }}
+
     permissions:
-      actions: write
+      contents: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Install Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Get version
+        id: project
+        shell: bash
+        run: echo "version=$(python -c 'import tomllib;fp=open("pyproject.toml","rb");print(tomllib.load(fp)["project"]["version"]);fp.close()')" >> $GITHUB_OUTPUT
+
+  release:
+    needs: get-version
+
+    permissions:
       contents: write
-      id-token: write
-      attestations: write
 
-    uses: NathanVaughn/reusable-actions/.github/workflows/pypi-build-uv.yml@main
+    uses: NathanVaughn/reusable-actions/.github/workflows/create-release.yml@main
+    with:
+      tag: ${{ needs.get-version.outputs.version }}
+      body: "Latest release"
 
-  publish:
+
+  build:
+    needs: get-version
+
+    permissions:
+      contents: read
+      packages: write
+
+    uses: NathanVaughn/reusable-actions/.github/workflows/docker-build-push.yml@main
+    with:
+      attest_id: image1
+      platform: linux/amd64
+      tags: |
+        ghcr.io/nathanvaughn/k8s-dns:latest
+        ghcr.io/nathanvaughn/k8s-dns:${{ needs.get-version.outputs.version }}
+      dockerfile: docker/Dockerfile
+      context: .
+      push: true
+
+  attest:
     needs: build
 
     permissions:
       id-token: write
+      contents: read
+      attestations: write
+      packages: write
 
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        name: [ghcr.io/nathanvaughn/k8s-dns]
 
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: pkg-dist
-          path: dist/
-
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          attestations: true
+    uses: NathanVaughn/reusable-actions/.github/workflows/docker-attest.yml@main
+    with:
+      name: ${{ matrix.name }}
+      attest_id: image1
