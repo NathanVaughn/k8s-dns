@@ -34,7 +34,11 @@ The following environment variables are required:
   including prefix and port. Example:
   `http://technitium-dns-service.technitium-dns.svc.cluster.local:5380`
 
-The custom resource definition in the `crd` folder also must be applied.
+The custom resource definition in the `crds` folder also must be applied:
+
+```bash
+kubectl apply -f https://raw.githubusercontent.com/NathanVaughn/k8s-dns/refs/heads/main/crds/dnsrecords.yaml
+```
 
 The following permissions are also required:
 
