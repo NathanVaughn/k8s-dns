@@ -5,6 +5,14 @@ import app.providers.technitium
 import app.utils
 
 
+@kopf.on.startup()  # type: ignore
+def configure(settings: kopf.OperatorSettings, **_):
+    # https://github.com/nolar/kopf/issues/957#issuecomment-1652073222
+    settings.watching.connect_timeout = 1 * 60
+    settings.watching.server_timeout = 1 * 60
+    settings.watching.client_timeout = 1 * 60
+
+
 @kopf.on.create("nathanv.me", "v1", "dnsconfigs")  # type: ignore
 def create_handler(spec: dict, namespace: str, **kwargs: dict) -> dict:
     create_or_update(spec, namespace)
