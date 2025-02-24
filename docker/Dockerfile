@@ -18,4 +18,5 @@ COPY app app
 COPY docker/docker-entrypoint.py ./
 
 EXPOSE 80
-CMD ["uv", "run", "kopf", "run", "docker-entrypoint.py", "--all-namespaces", "--verbose"]
+# https://kopf.readthedocs.io/en/stable/probing/
+CMD ["uv", "run", "kopf", "run", "docker-entrypoint.py", "--liveness=http://0.0.0.0:8080/healthz", "--all-namespaces", "--verbose"]

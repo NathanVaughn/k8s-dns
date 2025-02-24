@@ -34,76 +34,15 @@ The following environment variables are required:
   including prefix and port. Example:
   `http://technitium-dns-service.technitium-dns.svc.cluster.local:5380`
 
-The custom resource definition in the `crd` folder also must be applied.
+The manifests in the `manifests` folder must also be applied:
 
-The following permissions are also required:
-
-```yaml
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: k8s-dns-account
-  namespace: k8s-dns
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: k8s-dns-role-cluster
-rules:
-  - apiGroups: [""]
-    resources: [services, namespaces]
-    verbs: [get, list, watch]
-  - apiGroups: [apiextensions.k8s.io]
-    resources: [customresourcedefinitions]
-    verbs: [get, list, watch]
-  - apiGroups: [admissionregistration.k8s.io/v1, admissionregistration.k8s.io/v1beta1]
-    resources: [validatingwebhookconfigurations, mutatingwebhookconfigurations]
-    verbs: [create, patch]
-  - apiGroups: [""]
-    resources: [events]
-    verbs: [create]
-  - apiGroups: [nathanv.me]
-    resources: [dnsconfigs]
-    verbs: [get, list, watch, patch, update]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: k8s-dns-role
-  namespace: k8s-dns
-rules:
-  - apiGroups: [""]
-    resources: [events]
-    verbs: [create]
-  - apiGroups: [nathanv.me]
-    resources: [dnsconfigs]
-    verbs: [get, list, watch, patch, update]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: k8s-dns-rolebinding-cluster
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: k8s-dns-role-cluster
-subjects:
-  - kind: ServiceAccount
-    name: k8s-dns-account
-    namespace: k8s-dns
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: k8s-dns-rolebinding
-  namespace: k8s-dns
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: k8s-dns-role
-subjects:
-  - kind: ServiceAccount
-    name: k8s-dns-account
+```bash
+kubectl apply -f https://raw.githubusercontent.com/NathanVaughn/k8s-dns/refs/heads/main/manifests/cluster-role-binding.yaml
+kubectl apply -f https://raw.githubusercontent.com/NathanVaughn/k8s-dns/refs/heads/main/manifests/cluster-role.yaml
+kubectl apply -f https://raw.githubusercontent.com/NathanVaughn/k8s-dns/refs/heads/main/manifests/dnsconfigs.yaml
+kubectl apply -f https://raw.githubusercontent.com/NathanVaughn/k8s-dns/refs/heads/main/manifests/role-binding.yaml
+kubectl apply -f https://raw.githubusercontent.com/NathanVaughn/k8s-dns/refs/heads/main/manifests/role.yaml
+kubectl apply -f https://raw.githubusercontent.com/NathanVaughn/k8s-dns/refs/heads/main/manifests/service-account.yaml
 ```
 
 ## Development
