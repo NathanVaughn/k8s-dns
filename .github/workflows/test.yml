@@ -1,0 +1,17 @@
+name: Tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+      - release
+
+jobs:
+  test:
+    permissions:
+      contents: read
+
+    uses: NathanVaughn/reusable-actions/.github/workflows/python-test-uv.yml@main
+    with:
+      pytest: false
