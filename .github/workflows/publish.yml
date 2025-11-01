@@ -20,17 +20,13 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
-
-      - name: Install Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
+        uses: actions/checkout@v5
 
       - name: Get version
         id: project
         shell: bash
-        run: echo "version=$(python -c 'import tomllib;fp=open("pyproject.toml","rb");print(tomllib.load(fp)["project"]["version"]);fp.close()')" >> $GITHUB_OUTPUT
+        run: echo "version=$(uv version --short)" >> $GITHUB_OUTPUT
+
   build:
     needs: get-version
 
