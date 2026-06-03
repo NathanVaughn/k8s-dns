@@ -1,6 +1,6 @@
 [project]
     name = "k8s-dns"
-    version = "0.1.4"
+    version = "0.1.5"
     description = "A Kubernetes controller to manage internal and external DNS records"
     readme = "README.md"
     authors = [{ name = "Nathan Vaughn", email = "nath@nvaughn.email" }]
@@ -17,7 +17,7 @@
     ]
 
 [dependency-groups]
-    dev = ["pre-commit>=3.2.0"]
+    dev = ["pre-commit>=3.2.0", "pre-commit-uv>=4.2.1"]
 
 [project.urls]
     Homepage   = "https://github.com/NathanVaughn/k8s-dns"
