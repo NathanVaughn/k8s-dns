@@ -14,14 +14,12 @@
         {
             "label": "run",
             "command": "uv run kopf run app.py --verbose",
-            "type": "shell",
-            "dependsOn": ["install-pkgs"]
+            "type": "shell"
         },
         {
             "label": "build",
             "command": "docker build -t cr.nathanv.app/library/k8s-dns:latest -f docker/Dockerfile .",
-            "type": "shell",
-            "dependsOn": ["install-pkgs"]
+            "type": "shell"
         }
     ]
 }
