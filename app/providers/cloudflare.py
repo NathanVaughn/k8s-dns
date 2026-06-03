@@ -13,6 +13,7 @@ from app.types import RECORD_TYPES
 # ie, game server, not HTTP traffic
 # http traffic will always be proxied
 PROXIED: dict[RECORD_TYPES, bool] = {"A": False, "CNAME": True}
+AUTOMATIC_TTL = 1
 
 
 class _CloudflareProvider(BaseProvider):
@@ -67,6 +68,7 @@ class _CloudflareProvider(BaseProvider):
             zone_id=zone.id,
             type=type,
             name=host,
+            ttl=AUTOMATIC_TTL,
             content=target,
             proxied=PROXIED[type],
             comment=comments,
@@ -89,6 +91,7 @@ class _CloudflareProvider(BaseProvider):
             dns_record_id=existing_record.id,
             type=type,
             name=host,
+            ttl=AUTOMATIC_TTL,
             content=target,
             proxied=PROXIED[type],
             comment=comments,
