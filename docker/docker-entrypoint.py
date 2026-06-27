@@ -5,8 +5,8 @@ import app.providers.technitium
 import app.utils
 
 
-@kopf.on.startup()  # type: ignore
-def configure(settings: kopf.OperatorSettings, **_):
+@kopf.on.startup()
+def configure(settings: kopf.OperatorSettings, **_) -> None:  # noqa: ANN003
     # https://github.com/nolar/kopf/issues/957#issuecomment-1652073222
     settings.watching.connect_timeout = 1 * 60
     settings.watching.server_timeout = 1 * 60
