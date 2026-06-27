@@ -14,7 +14,7 @@ class _TechnitiumProvider(BaseProvider):
     def name(self) -> str:
         return "Technitium"
 
-    def _api_call(self, path: str, params: dict[str, str]) -> dict:
+    def _api_call(self, path: str, params: dict[str, str | bool]) -> dict:
         """
         Make an API call to the Technitium DNS API.
         """
@@ -148,7 +148,7 @@ class _TechnitiumProvider(BaseProvider):
         if existing_record.type == "A":
             params["ipAddress"] = existing_record.target
 
-        self._api_call(path, params)
+        self._api_call(path, params)  # ty:ignore[invalid-argument-type]
 
 
 Provider = _TechnitiumProvider()

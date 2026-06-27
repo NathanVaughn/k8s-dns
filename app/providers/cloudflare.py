@@ -24,13 +24,13 @@ class _CloudflareProvider(BaseProvider):
     def name(self) -> str:
         return "Cloudflare"
 
-    @functools.cache
+    @functools.cache  # noqa: B019
     def _find_zone(self, host: str) -> Zone:
         """
         Given a host, find and return the Cloudflare Zone for it.
         """
         host_zone = app.utils.get_zone_from_host(host)
-        return list(self._client.zones.list(name=host_zone))[0]
+        return next(iter(self._client.zones.list(name=host_zone)))
 
     def _find_record(self, host: str) -> DNSRecord | None:
         """
@@ -51,7 +51,7 @@ class _CloudflareProvider(BaseProvider):
 
         return DNSRecord(
             id=record.id,
-            host=record.name,  # type: ignore
+            host=record.name,
             target=record.content,  # type: ignore
             type=record.type,  # type: ignore
         )
