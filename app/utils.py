@@ -3,6 +3,8 @@ import logging
 
 import app.k8s
 
+logger = logging.getLogger(__name__)
+
 
 @functools.cache
 def get_zone_from_host(host: str) -> str:
@@ -24,5 +26,5 @@ def get_service_ip(namespace: str, name: str) -> str:
     """
     service = app.k8s.v1_client.read_namespaced_service(name=name, namespace=namespace)
     ip = service.status.load_balancer.ingress[0].ip
-    logging.info(f"Service {name} in namespace {namespace} has IP {ip}")
+    logger.info(f"Service {name} in namespace {namespace} has IP {ip}")
     return ip

@@ -25,21 +25,10 @@
     Issues     = "https://github.com/NathanVaughn/k8s-dns/issues"
 
 [tool.ruff.lint]
-    select = [
-        "E",
-        "W",
-        "F",   # pycodestyle + pyflakes (flake8's defaults)
-        "I",   # isort
-        "UP",  # pyupgrade
-        "N",   # pep8-naming
-        "B",   # flake8-bugbear
-        "C4",  # flake8-comprehensions
-        "PT",  # flake8-pytest-style
-        "Q",   # flake8-quotes
-        "ISC", # flake8-implicit-str-concat
-        "TID", # flake8-tidy-imports
-        "FLY", # flynt
-        "RUF", # ruff-specific rules
-        "ANN", # type annotations
-    ]
+    extend-select = ["ANN"]
     ignore = ["ANN401", "E501"]
+
+[[tool.uv.index]]
+    name    = "pkgs"
+    url     = "https://pkgs.nathanv.app/pypi/simple"
+    default = true

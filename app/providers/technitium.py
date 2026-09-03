@@ -1,5 +1,3 @@
-import logging
-
 import requests
 
 import app.utils
@@ -7,6 +5,7 @@ from app.config import TECHNITIUM_API_TOKEN, TECHNITIUM_HOST
 from app.models import DNSRecord
 from app.providers._base import BaseProvider
 from app.types import RECORD_TYPES
+from app.utils import logger
 
 
 class _TechnitiumProvider(BaseProvider):
@@ -23,7 +22,7 @@ class _TechnitiumProvider(BaseProvider):
         url = f"{TECHNITIUM_HOST.removesuffix('/')}/api/{path}"
 
         # logging
-        logging.debug(f"Making API call to {url} with params: {params}")
+        logger.debug(f"Making API call to {url} with params: {params}")
 
         # add api token to params
         params["token"] = TECHNITIUM_API_TOKEN
@@ -35,7 +34,7 @@ class _TechnitiumProvider(BaseProvider):
         response.raise_for_status()
         response_json = response.json()
         if response_json["status"] != "ok":
-            raise Exception(f"API call failed: {response_json}")
+            raise Exception(f"API call failed: {response_json}")  # noqa: TRY002
 
         return response_json
 
