@@ -142,12 +142,16 @@ class _TechnitiumProvider(BaseProvider):
         host_zone = app.utils.get_zone_from_host(host)
 
         path = "zones/records/delete"
-        params = {"domain": host, "zone": host_zone, "type": existing_record.type}
+        params: dict[str, str | bool] = {
+            "domain": host,
+            "zone": host_zone,
+            "type": existing_record.type,
+        }
 
         if existing_record.type == "A":
             params["ipAddress"] = existing_record.target
 
-        self._api_call(path, params)  # ty:ignore[invalid-argument-type]
+        self._api_call(path, params)
 
 
 Provider = _TechnitiumProvider()

@@ -48,12 +48,14 @@ class _CloudflareProvider(BaseProvider):
             return None
 
         record = response[0]
+        assert record.content is not None
+        assert record.type in ["A", "CNAME"]
 
         return DNSRecord(
             id=record.id,
             host=record.name,
-            target=record.content,  # type: ignore
-            type=record.type,  # type: ignore
+            target=record.content,
+            type=record.type,
         )
 
     def _create_record(
