@@ -1,8 +1,8 @@
-import logging
 from abc import ABC, abstractmethod
 
 from app.models import DNSRecord
 from app.types import RECORD_TYPES
+from app.utils import logger
 
 
 class BaseProvider(ABC):
@@ -61,10 +61,10 @@ class BaseProvider(ABC):
         record = self._find_record(host)
         if record:
             if record.host == host and record.target == target and record.type == type:
-                logging.info(f"[{self.name}] DNS record for {host} already exists")
+                logger.info(f"[{self.name}] DNS record for {host} already exists")
                 return
 
-            logging.info(f"[{self.name}] Updating DNS record for {host} -> {target}")
+            logger.info(f"[{self.name}] Updating DNS record for {host} -> {target}")
             self._update_record(
                 host=host,
                 target=target,
@@ -73,7 +73,7 @@ class BaseProvider(ABC):
                 comments=comments,
             )
         else:
-            logging.info(f"[{self.name}] Creating DNS record for {host} -> {target}")
+            logger.info(f"[{self.name}] Creating DNS record for {host} -> {target}")
             self._create_record(host=host, target=target, type=type, comments=comments)
 
     def del_record(self, host: str) -> None:
@@ -82,5 +82,5 @@ class BaseProvider(ABC):
         """
         record = self._find_record(host=host)
         if record:
-            logging.info(f"[{self.name}] Deleting DNS record for {host}")
+            logger.info(f"[{self.name}] Deleting DNS record for {host}")
             self._delete_record(host=host, existing_record=record)
