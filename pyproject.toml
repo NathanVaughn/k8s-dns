@@ -8,7 +8,7 @@
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.13",
     ]
-    requires-python = ">=3.12"
+    requires-python = ">=3.14"
     dependencies = [
         "cloudflare>=4.0.0",
         "kopf>=1.37.4",
